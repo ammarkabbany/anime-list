@@ -9,10 +9,9 @@ export async function GET(
 
   try {
     const response = await fetch(
-      `${env.NEXT_PUBLIC_JIKAN_API_URL}/anime/${id}`,
+      `${env.NEXT_PUBLIC_JIKAN_API_URL}/anime/${id}/full`,
     );
     if (response.ok) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const data = await response.json();
       return NextResponse.json(data.data, { status: 200 });
     }

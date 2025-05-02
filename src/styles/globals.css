@@ -126,7 +126,7 @@
 
 @layer components {
   .anime-card {
-    @apply bg-card rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300;
+    @apply bg-card rounded-md overflow-hidden shadow-md hover:shadow-xl transition-all duration-300;
   }
   
   .card-image-container {
@@ -134,11 +134,11 @@
   }
   
   .card-image {
-    @apply object-cover w-full h-full transition-transform duration-300;
+    @apply object-cover opacity-80 w-full h-full transition-transform duration-300;
   }
   
   .anime-card:hover .card-image {
-    @apply scale-105;
+    @apply scale-[1.05];
   }
   
   .card-overlay {

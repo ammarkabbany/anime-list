@@ -8,6 +8,7 @@ export const env = createEnv({
    */
   server: {
     NODE_ENV: z.enum(["development", "test", "production"]),
+    APPWRITE_API_KEY: z.string(),
   },
 
   /**
@@ -18,7 +19,11 @@ export const env = createEnv({
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
     NEXT_PUBLIC_JIKAN_API_URL: z.string(),
-    NEXT_PUBLIC_NEXT_URL: z.string()
+    NEXT_PUBLIC_NEXT_URL: z.string(),
+    NEXT_PUBLIC_APPWRITE_ENDPOINT: z.string(),
+    NEXT_PUBLIC_APPWRITE_PROJECT: z.string(),
+    NEXT_PUBLIC_DATABASE_ID: z.string(),
+    NEXT_PUBLIC_ANIMELIST_COLLECTION_ID: z.string(),
   },
 
   /**
@@ -27,8 +32,13 @@ export const env = createEnv({
    */
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
+    APPWRITE_API_KEY: process.env.APPWRITE_API_KEY,
     NEXT_PUBLIC_JIKAN_API_URL: process.env.NEXT_PUBLIC_JIKAN_API_URL,
-    NEXT_PUBLIC_NEXT_URL: process.env.NEXT_PUBLIC_NEXT_URL
+    NEXT_PUBLIC_NEXT_URL: process.env.NEXT_PUBLIC_NEXT_URL,
+    NEXT_PUBLIC_APPWRITE_ENDPOINT: process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT,
+    NEXT_PUBLIC_APPWRITE_PROJECT: process.env.NEXT_PUBLIC_APPWRITE_PROJECT,
+    NEXT_PUBLIC_DATABASE_ID: process.env.NEXT_PUBLIC_DATABASE_ID,
+    NEXT_PUBLIC_ANIMELIST_COLLECTION_ID: process.env.NEXT_PUBLIC_ANIMELIST_COLLECTION_ID,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

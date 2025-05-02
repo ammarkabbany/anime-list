@@ -49,8 +49,33 @@ export interface Anime {
     url: string | null;
     embed_url: string | null;
   };
+  relations: AnimeRelation[];
   studios: { mal_id: number; type: string; name: string }[];
   genres: { mal_id: number; type: string; name: string }[];
+}
+
+export interface AnimeRelation {
+  relation: string;
+  entry: {
+    mal_id: number;
+    type: string;
+    name: string;
+    url: string;
+    // images: [
+    //   {
+    //     jpg: {
+    //       image_url: string;
+    //       small_image_url: string;
+    //       large_image_url: string;
+    //     };
+    //     webp: {
+    //       image_url: string;
+    //       small_image_url: string;
+    //       large_image_url: string;
+    //     };
+    //   }
+    // ];
+  }[];
 }
 
 export interface Pagination {
