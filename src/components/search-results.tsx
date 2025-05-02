@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, type ChangeEventHandler } from "react";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -31,7 +31,7 @@ export default function SearchResults() {
           }
         } catch (error) {
           // Only report errors that aren't from aborting
-          if (error.name !== 'AbortError') {
+          if (error instanceof Error && error.name !== 'AbortError') {
             console.error('Search error:', error);
           }
         } finally {
@@ -55,7 +55,7 @@ export default function SearchResults() {
   }, [query]); // Re-run effect when query changes
 
   // Handle input change
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
   };
 
