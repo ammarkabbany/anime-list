@@ -48,18 +48,21 @@ const AnimeCard: React.FC<AnimeCardProps> = ({ anime, onClick }) => {
       </div>
 
       {/* Content section - title, displayed below image */}
-      <div className="p-3">
+      <div className="px-3 py-2"> {/* Adjusted padding */}
         <h3
             className="truncate text-base font-semibold text-foreground transition-colors group-hover:text-primary"
             title={anime.title} // Add title attribute for full title on hover if truncated
         >
           {anime.title}
         </h3>
-        {/* Status and episodes are removed from this card display as per new design focus */}
-        {/* If other minimal info is needed, it can go here, e.g., year */}
-        {anime.year && (
-            <p className="text-xs text-muted-foreground mt-0.5">{anime.year}</p>
-        )}
+        <div className="mt-0.5 flex flex-col"> {/* Wrapper for year and status */}
+          {anime.year && (
+              <p className="text-xs text-muted-foreground">{anime.year}</p>
+          )}
+          {anime.status && (
+              <p className="mt-0.5 text-xs text-muted-foreground/80 truncate" title={anime.status}>{anime.status}</p>
+          )}
+        </div>
       </div>
     </Card>
   );

@@ -101,12 +101,12 @@ export default function SearchResults() {
                       height={75}
                       className="rounded-md object-cover"
                     />
-                    <div>
-                      <h3 className="font-semibold text-card-foreground group-hover:text-primary">{result.title}</h3>
+                    <div className="space-y-0.5"> {/* Added space-y for consistent spacing */}
+                      <h3 className="font-semibold text-base text-card-foreground group-hover:text-primary line-clamp-2" title={result.title}>{result.title}</h3>
                       <p className="text-sm text-muted-foreground group-hover:text-accent-foreground">
                         {result.year}{result.episodes ? ` - ${result.episodes} episodes` : ""}
                       </p>
-                      <div className="mt-1 flex gap-2">
+                      <div className="mt-1 flex gap-2"> {/* mt-1 still fine here for spacing above badges block */}
                         {result.type && <Badge key={result.type} variant="secondary" className="bg-secondary text-secondary-foreground group-hover:bg-primary/20 group-hover:text-primary">{result.type}</Badge>}
                         {result.status && <Badge key={result.status} variant="outline" className="group-hover:border-primary/50 group-hover:text-primary/80">{result.status}</Badge>}
                       </div>
