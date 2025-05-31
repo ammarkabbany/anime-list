@@ -5,8 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 import { type Anime, type AnimeResponse } from "@/types/jikan";
 import AnimeCard from "@/components/AnimeCard";
 import { useRouter } from "next/navigation";
-import SearchBar from "@/components/search-bar";
-import SearchResults from "@/components/search-results";
 
 export default function HomePage() {
   const router = useRouter();
@@ -31,28 +29,10 @@ export default function HomePage() {
         }
       },
   })
-
-  const handleSearch = async (query: string) => {
-    try {
-      const response = await fetch(`${env.NEXT_PUBLIC_NEXT_URL}/api/anime/search?query=${query}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      const data = await response.json() as AnimeResponse
-      return data.data
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      return []
-    }
-  }
   
   return (
     <main className="flex flex-col items-center justify-center p-4">
       <h1 className="text-2xl font-bold mb-4">Top Animes</h1>
-      <div className="mb-4 w-full">
-      </div>
       {isLoading ? (
         <div>Loading...</div>
       ) : (
