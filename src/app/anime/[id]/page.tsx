@@ -214,7 +214,7 @@ const AnimePage = async ({ params }: AnimePageProps) => {
             </a>
           </section>
 
-          {anime.trailer?.embed_url && (
+          {modifiedTrailerUrl && ( // Changed condition to use modifiedTrailerUrl
             <section className="lg:col-span-2 mb-10"> {/* Trailer section */}
               <h3 className="text-2xl font-semibold text-primary mb-4 border-b-2 border-primary/30 pb-2">
                 Trailer
@@ -222,10 +222,10 @@ const AnimePage = async ({ params }: AnimePageProps) => {
               <div className="aspect-video overflow-hidden rounded-lg shadow-md">
                 <iframe
                   className="w-full h-full"
-                  src={modifiedTrailerUrl} // Use the modified URL
+                  src={modifiedTrailerUrl === null ? undefined : modifiedTrailerUrl} // Explicitly pass undefined if null
                   title="Anime Trailer"
                   frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                 ></iframe>
               </div>
