@@ -4,6 +4,8 @@ import { env } from "@/env"
 import { useQuery } from "@tanstack/react-query";
 import { type Anime, type AnimeResponse } from "@/types/jikan";
 import AnimeCard from "@/components/AnimeCard";
+import SeasonalAnimeSection from "@/components/SeasonalAnimeSection";
+import UpcomingAnimeSection from "@/components/UpcomingAnimeSection"; // Import the new upcoming section
 import { useRouter } from "next/navigation";
 
 export default function HomePage() {
@@ -31,23 +33,29 @@ export default function HomePage() {
   })
   
   return (
-    <main className="flex flex-col items-center justify-center p-4">
-      <h1 className="text-2xl font-bold mb-4">Top Animes</h1>
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
-        <div className="container mx-auto grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-          {data?.map((anime) => (
-            <AnimeCard 
-              key={anime.mal_id}
-              anime={anime}
-              onClick={(anime) => {
-                router.push(`/anime/${anime.mal_id}`)
-              }}
-            />
-          ))}
-        </div>
-      )}
+    // Use container on main to avoid nested containers if SeasonalAnimeSection also has one
+    <main className="container mx-auto flex flex-col items-center justify-center p-4">
+      <section className="w-full"> {/* Wrapper for Top Animes */}
+        <h1 className="text-2xl font-bold mb-4 text-center md:text-left">Top Animes</h1> {/* Centered on mobile, left on md+ */}
+        {isLoading ? (
+          <div className="text-center">Loading Top Animes...</div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            {data?.map((anime) => (
+              <AnimeCard
+                key={anime.mal_id}
+                anime={anime}
+                onClick={(anime) => { // This onClick makes HomePage a client component
+                  router.push(`/anime/${anime.mal_id}`)
+                }}
+              />
+            ))}
+          </div>
+        )}
+      </section>
+
+      <SeasonalAnimeSection />
+      <UpcomingAnimeSection /> {/* Add the upcoming section here */}
     </main>
   );
 }

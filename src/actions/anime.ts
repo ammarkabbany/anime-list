@@ -21,3 +21,17 @@ export async function getAnimeById(id: string) {
     return null
   }
 }
+
+export async function getSeasonalAnime(season: string = 'now'): Promise<Anime[]> {
+  try {
+    const response = await fetch(`https://api.jikan.moe/v4/seasons/${season}`);
+    if (!response.ok) {
+      throw new Error(`Jikan API Error: ${response.status} ${response.statusText}`);
+    }
+    const responseData = await response.json() as { data: Anime[] }; // Assuming Jikan's seasonal response structure
+    return responseData.data || [];
+  } catch (error) {
+    console.error("Error fetching seasonal anime:", error);
+    return [];
+  }
+}

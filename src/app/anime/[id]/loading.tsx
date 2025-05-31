@@ -3,8 +3,9 @@ import { Loader2 } from "lucide-react";
 
 export default function Loading() {
   return (
-    <div className="min-h-[90vh] flex items-center justify-center">
-      <Loader2 className="animate-spin text-blue-500 size-8" />
+    <div className="min-h-[90vh] flex flex-col items-center justify-center gap-4">
+      <Loader2 className="animate-spin text-primary size-12" />
+      <p className="text-lg font-semibold text-primary/80">Summoning Anime Details...</p>
     </div>
   )
 }
