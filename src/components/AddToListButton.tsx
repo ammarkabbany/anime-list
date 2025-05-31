@@ -25,7 +25,8 @@ export default function AddToListButton({ animeId, action }: AddToListButtonProp
       <Button
         type="submit"
         variant="default"
-        className="flex items-center justify-center gap-2 bg-blue-500 text-white transition-colors hover:bg-blue-600"
+        // Removed bg-blue-500, hover:bg-blue-600 to use default variant's gradient and press effect
+        className="flex items-center justify-center gap-2 text-white transition-colors"
         disabled={isPending}
       >
         <PlusCircleIcon className="h-4 w-4" />

@@ -30,6 +30,14 @@ export function Navbar() {
                 </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
+            {/* New Seasons Link */}
+            <NavigationMenuItem>
+              {/* <Link href="/seasons" passHref> */}
+                <NavigationMenuLink href="/seasons" className={navigationMenuTriggerStyle()}>
+                  Seasons
+                </NavigationMenuLink>
+              {/* </Link> */}
+            </NavigationMenuItem>
             <SignedIn>
               <NavigationMenuItem>
                 <NavigationMenuLink

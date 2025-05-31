@@ -59,7 +59,9 @@ function NavigationMenuItem({
 }
 
 const navigationMenuTriggerStyle = cva(
-  "group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground disabled:pointer-events-none disabled:opacity-50 data-[state=open]:hover:bg-accent data-[state=open]:text-accent-foreground data-[state=open]:focus:bg-accent data-[state=open]:bg-accent/50 focus-visible:ring-ring/50 outline-none transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1"
+  "group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-semibold text-foreground/90 hover:text-primary hover:bg-primary/10 focus:text-primary focus:bg-primary/10 data-[state=open]:text-primary data-[state=open]:bg-primary/10 disabled:pointer-events-none disabled:opacity-50 focus-visible:ring-ring/50 outline-none transition-all duration-200 ease-in-out focus-visible:ring-[3px] focus-visible:outline-1"
+  // Note: Removed bg-background from base as navbar usually has its own bg. Links should be transparent on it.
+  // data-[active] is not directly available here, using focus and data-[state=open] to imply active/selected.
 )
 
 function NavigationMenuTrigger({

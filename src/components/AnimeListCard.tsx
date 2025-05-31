@@ -8,7 +8,7 @@ import { type AnimeListEntry, AnimeListStatus } from "@/types/animelist";
 import { useAuth } from "@clerk/nextjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { updateAnimeListEntryEpisodes } from "@/actions/animelist";
+import { updateAnimeListEntryEpisodes, updateAnimeListEntryScore } from "@/actions/animelist";
 import { useUpdateAnimeEpisodes } from "@/hooks/use-update-anime-episodes";
 import { Button } from "./ui/button";
 
@@ -65,36 +65,47 @@ const AnimeListCard: React.FC<AnimeListCardProps> = ({ entry, userId }) => {
     setScoreSelectOpen((prev) => !prev);
   };
 
-  const handleUpdateEpisodes = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleUpdateEpisodes = (e?: React.FormEvent) => {
+    e?.preventDefault();
+
+    if (episodesInputValue === entry.episodes_watched) {
+      // console.log("Episode count unchanged, not updating.");
+      setEpisodesInputOpen(false); // Still close the input if blurred
+      return;
+    }
+
     const value = episodesInputValue;
     if (isNaN(value)) return;
     if (value >= 0 && value <= (entry.total_episodes ?? Infinity)) {
+      startTransition(() => {
+        mutate(
+          { entry, value: episodesInputValue },
+          {
+            onSuccess: () => {
+              router.refresh();
+            },
+          },
+        );
+      });
+      setEpisodesInputOpen(false);
+    }
+  };
+  const handleIncreaseEpisodes = () => {
+    startTransition(() => {
       mutate(
-        { entry, value: episodesInputValue },
+        { entry, value: entry.episodes_watched + 1 },
         {
           onSuccess: () => {
             router.refresh();
           },
         },
       );
-      setEpisodesInputOpen(false);
-    }
-  };
-  const handleIncreaseEpisodes = () => {
-    mutate(
-      { entry, value: entry.episodes_watched + 1 },
-      {
-        onSuccess: () => {
-          router.refresh();
-        },
-      },
-    );
+    });
   };
 
   return (
     <Card
-      className="anime-card flex h-full flex-col gap-1 rounded-md border-0 py-0"
+      className="anime-card flex h-full flex-col gap-1 rounded-md border-primary/20 py-0 shadow-lg hover:shadow-primary/20"
       // onClick={() => onClick(anime)}
     >
       <CardContent className="card-image-container">
@@ -117,7 +128,7 @@ const AnimeListCard: React.FC<AnimeListCardProps> = ({ entry, userId }) => {
       <div className="flex h-25 flex-grow flex-col justify-between p-2">
         <Link
           href={`/anime/${entry.mal_id}`}
-          className="line-clamp-2 text-sm font-semibold transition-colors hover:text-indigo-300"
+          className="line-clamp-2 text-sm font-semibold transition-colors hover:text-primary"
         >
           {entry.title}
         </Link>
@@ -133,11 +144,24 @@ const AnimeListCard: React.FC<AnimeListCardProps> = ({ entry, userId }) => {
                       e.target.value === "not-scored"
                         ? null
                         : Number(e.target.value);
-                    console.log("New score:", newScore);
+                    // console.log("New score:", newScore);
+                    if (!clerkUserId) {
+                      console.warn('User ID is null, cannot update score.');
+                      return;
+                    }
+                    startTransition(() => {
+                      updateAnimeListEntryScore({
+                        entryId: entry.$id,
+                        userId: clerkUserId,
+                        score: newScore,
+                      }).then(() => {
+                        router.refresh();
+                      });
+                    });
                     setScoreSelectOpen(false);
                   }}
                   defaultValue={entry.score?.toString() ?? "not-scored"}
-                  className="text-muted-foreground bg-accent cursor-pointer rounded border-none text-xs font-normal focus:outline-none"
+                  className="text-muted-foreground bg-card hover:bg-accent/10 cursor-pointer rounded border-none text-xs font-normal focus:outline-none"
                 >
                   <option value="not-scored" disabled>
                     Score
@@ -156,15 +180,15 @@ const AnimeListCard: React.FC<AnimeListCardProps> = ({ entry, userId }) => {
                 </select>
               ) : entry.score ? (
                 <span
-                  className="flex cursor-pointer items-center gap-1 hover:text-indigo-400"
+                  className="flex cursor-pointer items-center gap-1 text-primary hover:text-primary/80"
                   onClick={handleScoreClick}
                 >
                   Scored
-                  <strong className="text-xs">{entry.score}</strong>
+                  <strong className="text-xs font-bold">{entry.score}</strong>
                 </span>
               ) : (
                 <span
-                  className="text-muted-foreground hover:cursor-pointer hover:text-indigo-400"
+                  className="text-muted-foreground hover:cursor-pointer hover:text-primary/80"
                   onClick={handleScoreClick}
                 >
                   Not Scored
@@ -175,30 +199,31 @@ const AnimeListCard: React.FC<AnimeListCardProps> = ({ entry, userId }) => {
           <div className="flex items-center gap-1">
             <div className="text-muted-foreground flex items-center gap-1 text-xs font-normal">
               {episodesInputOpen ? (
-                <form onSubmit={handleUpdateEpisodes}>
-                  <input
-                    type="number"
-                    defaultValue={entry.episodes_watched}
-                    onBlur={() => setEpisodesInputOpen(false)}
-                    onChange={(e) => {
-                      const value = e.target.valueAsNumber;
-                      if (isNaN(value)) return;
-                      setEpisodesInputValue(value);
-                    }}
-                    disabled={isPending}
-                    onFocus={(e) => e.target.select()}
-                    className="bg-accent border-nonetext-center w-8 [appearance:textfield] rounded border px-1 text-xs font-normal focus:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                  />
-                </form>
+                <input
+                  type="number"
+                  defaultValue={entry.episodes_watched}
+                  onBlur={() => {
+                    handleUpdateEpisodes();
+                    setEpisodesInputOpen(false);
+                  }}
+                  onChange={(e) => {
+                    const value = e.target.valueAsNumber;
+                    if (isNaN(value)) return;
+                    setEpisodesInputValue(value);
+                  }}
+                  disabled={isPending}
+                  onFocus={(e) => e.target.select()}
+                  className="bg-card hover:bg-accent/10 border-nonetext-center w-8 [appearance:textfield] rounded border px-1 text-xs font-normal focus:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                />
               ) : (
                 <span
                   onClick={() => showPlusIcon && setEpisodesInputOpen(true)}
-                  className={`${showPlusIcon && "hover:text-indigo-400 hover:cursor-pointer"}`}
+                  className={`${showPlusIcon && "hover:text-primary/80 hover:cursor-pointer"}`}
                 >
-                  {entry.episodes_watched} of
+                  <strong className="text-foreground font-bold">{entry.episodes_watched}</strong> of
                 </span>
               )}
-              {entry.total_episodes}ep
+              {entry.total_episodes} ep
             </div>
             {showPlusIcon && (
               <Button 
@@ -206,9 +231,9 @@ const AnimeListCard: React.FC<AnimeListCardProps> = ({ entry, userId }) => {
                 size="icon"
                 onClick={handleIncreaseEpisodes}
                 disabled={isPending}
-                className="text-muted-foreground hover:text-muted-foreground/75 size-5 cursor-pointer stroke-2 transition-all"
+                className="text-muted-foreground size-5 cursor-pointer stroke-2 transition-all"
               >
-                <PlusCircle className="text-muted-foreground hover:text-muted-foreground/75 size-5 cursor-pointer stroke-2 transition-all" />
+                <PlusCircle className="size-5 cursor-pointer stroke-2 transition-all" />
               </Button>
             )}
           </div>

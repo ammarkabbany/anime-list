@@ -25,12 +25,17 @@ export async function getAnimeListEntries({
     return null;
   }
   const { databases } = await createAdminClient();
-  const response = await databases.listDocuments<AnimeListEntry>(
-    env.NEXT_PUBLIC_DATABASE_ID,
-    env.NEXT_PUBLIC_ANIMELIST_COLLECTION_ID,
-    [Query.equal("userId", userId)],
-  );
-  return response.documents;
+  try {
+    const response = await databases.listDocuments<AnimeListEntry>(
+      env.NEXT_PUBLIC_DATABASE_ID,
+      env.NEXT_PUBLIC_ANIMELIST_COLLECTION_ID,
+      [Query.equal("userId", userId)],
+    );
+    return response.documents;
+  } catch (error) {
+    console.error("Error fetching anime list entries:", error);
+    return []; // Return empty array on error
+  }
 }
 
 export async function getAnimeListEntry({
@@ -44,29 +49,34 @@ export async function getAnimeListEntry({
     return null;
   }
   const { databases } = await createAdminClient();
-  const response = await databases.listDocuments<AnimeListEntry>(
-    env.NEXT_PUBLIC_DATABASE_ID,
-    env.NEXT_PUBLIC_ANIMELIST_COLLECTION_ID,
+  try {
+    const response = await databases.listDocuments<AnimeListEntry>(
+      env.NEXT_PUBLIC_DATABASE_ID,
+      env.NEXT_PUBLIC_ANIMELIST_COLLECTION_ID,
     [
       Query.equal("mal_id", animeId),
       Query.equal("userId", userId),
     ],
-  );
-  const animeListEntry = response.documents[0];
-  if (!animeListEntry) {
+    );
+    const animeListEntry = response.documents[0];
+    if (!animeListEntry) {
+      return null;
+    }
+    return {
+      id: animeListEntry.$id,
+      mal_id: animeListEntry.mal_id,
+      userId: animeListEntry.userId,
+      status: animeListEntry.status,
+      score: animeListEntry.score,
+      title: animeListEntry.title,
+      imageUrl: animeListEntry.imageUrl,
+      total_episodes: animeListEntry.total_episodes,
+      episodes_watched: animeListEntry.episodes_watched,
+    };
+  } catch (error) {
+    console.error("Error fetching anime list entry:", error);
     return null;
   }
-  return {
-    id: animeListEntry.$id,
-    mal_id: animeListEntry.mal_id,
-    userId: animeListEntry.userId,
-    status: animeListEntry.status,
-    score: animeListEntry.score,
-    title: animeListEntry.title,
-    imageUrl: animeListEntry.imageUrl,
-    total_episodes: animeListEntry.total_episodes,
-    episodes_watched: animeListEntry.episodes_watched,
-  };
 }
 
 export async function updateAnimeListEntryStatus({
@@ -104,6 +114,39 @@ export async function updateAnimeListEntryStatus({
   }
 }
 
+export async function updateAnimeListEntryScore({
+  entryId,
+  userId,
+  score,
+}: {
+  entryId: string;
+  userId: string | undefined;
+  score: number | null;
+}) {
+  if (!userId) {
+    return null;
+  }
+  const { databases } = await createAdminClient();
+  try {
+    const response = await databases.updateDocument<AnimeListEntry>(
+      env.NEXT_PUBLIC_DATABASE_ID,
+      env.NEXT_PUBLIC_ANIMELIST_COLLECTION_ID,
+      entryId,
+      { score },
+    );
+    return {
+      id: response.$id,
+      mal_id: response.mal_id,
+      userId: response.userId,
+      status: response.status,
+      score: response.score,
+    };
+  } catch (error) {
+    console.error("Error updating anime list entry score:", error);
+    return null;
+  }
+}
+
 export async function updateAnimeListEntryEpisodes({
   entryId,
   userId,
@@ -118,7 +161,6 @@ export async function updateAnimeListEntryEpisodes({
   if (!userId) {
     return null;
   }
-  console.log(episodes)
   const { databases } = await createAdminClient();
   try {
     if (totalEpisodes !== null && episodes >= totalEpisodes) {

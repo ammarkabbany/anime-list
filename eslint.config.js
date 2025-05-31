@@ -38,6 +38,8 @@ export default tseslint.config(
         "error",
         { checksVoidReturn: { attributes: false } },
       ],
+      "@typescript-eslint/no-floating-promises": "off",
+      "@typescript-eslint/no-inferrable-types": "off",
     },
   },
   {

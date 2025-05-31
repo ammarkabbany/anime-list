@@ -43,22 +43,23 @@ const AnimeListPage = async ({params}: AnimeListPageProps) => {
     { value: allEntries, label: "All" },
     { value: AnimeListStatus.Watching, label: "Watching" },
     { value: AnimeListStatus.Completed, label: "Completed" },
-    // { value: AnimeListStatus.OnHold, label: "On Hold" },
-    // { value: AnimeListStatus.Dropped, label: "Dropped" },
+    { value: AnimeListStatus.OnHold, label: "On Hold" },
+    { value: AnimeListStatus.Dropped, label: "Dropped" },
     { value: AnimeListStatus.PlanToWatch, label: "Plan to Watch" },
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">My Anime List</h1>
+    <div className="container mx-auto px-4 py-8 mt-6">
+      <h1 className="text-4xl font-extrabold mb-8 text-primary">My Anime List</h1>
 
       {animeListEntries?.length ? (
         <Tabs defaultValue={allEntries}>
-          <TabsList className="mb-6">
+          <TabsList className="rounded-full shadow-md bg-primary-foreground p-1">
             {statusTabs.map(tab => (
               <TabsTrigger 
                 key={tab.value} 
                 value={tab.value}
+                // className is removed to use the new default styles from ui/tabs.tsx
                 disabled={tab.value === allEntries 
                   ? !animeListEntries.length 
                   : !entriesByStatus?.[tab.value as AnimeListStatus]?.length}
@@ -70,7 +71,7 @@ const AnimeListPage = async ({params}: AnimeListPageProps) => {
 
           {/* Special All tab */}
           <TabsContent key={allEntries} value={allEntries}>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
               {sortedAllEntries.map(entry => (
                 <AnimeListCard key={entry.$id} entry={entry} userId={userId} />
               ))}
@@ -80,13 +81,13 @@ const AnimeListPage = async ({params}: AnimeListPageProps) => {
           {/* Status-specific tabs */}
           {statusTabs.filter(tab => tab.value !== allEntries).map(tab => (
             <TabsContent key={tab.value} value={tab.value}>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
                 {entriesByStatus?.[tab.value as AnimeListStatus]?.map(entry => (
                   <AnimeListCard key={entry.$id} entry={entry} userId={userId} />
                 ))}
               </div>
               {!entriesByStatus?.[tab.value as AnimeListStatus]?.length && (
-                <p className="text-center text-muted-foreground py-10">
+                <p className="text-center text-lg text-muted-foreground py-12">
                   No anime in this category yet
                 </p>
               )}
@@ -95,7 +96,7 @@ const AnimeListPage = async ({params}: AnimeListPageProps) => {
         </Tabs>
       ) : (
         <div className="text-center py-16">
-          <p className="text-xl mb-4">Your anime list is empty</p>
+          <p className="text-2xl font-semibold mb-3 text-primary/90">Your anime list is empty</p>
           <p className="text-muted-foreground">
             Browse anime and add them to your list to keep track of your watching progress
           </p>
