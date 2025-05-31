@@ -37,6 +37,25 @@ const AnimePage = async ({ params }: AnimePageProps) => {
   const anime = await getAnimeById(id);
   const user = await currentUser();
 
+  let modifiedTrailerUrl = null;
+  if (anime?.trailer?.embed_url) {
+    try {
+      const url = new URL(anime.trailer.embed_url);
+      if (url.hostname === "www.youtube.com" || url.hostname === "youtube.com") {
+        url.searchParams.set('autoplay', '0');
+        // Optionally, remove other params like 'enablejsapi', 'wmode' if needed
+        // url.searchParams.delete('enablejsapi');
+      }
+      // For other platforms, specific logic might be needed if they don't respect autoplay=0
+      // or use different parameter names.
+      modifiedTrailerUrl = url.toString();
+    } catch (e) {
+      // Invalid URL, use original or handle error
+      console.error("Error parsing trailer URL:", e);
+      modifiedTrailerUrl = anime.trailer.embed_url; // Fallback to original if parsing fails
+    }
+  }
+
   if (!anime) {
     return (
       <div className="flex min-h-[90vh] items-center justify-center">
@@ -203,7 +222,7 @@ const AnimePage = async ({ params }: AnimePageProps) => {
               <div className="aspect-video overflow-hidden rounded-lg shadow-md">
                 <iframe
                   className="w-full h-full"
-                  src={anime.trailer.embed_url}
+                  src={modifiedTrailerUrl} // Use the modified URL
                   title="Anime Trailer"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
