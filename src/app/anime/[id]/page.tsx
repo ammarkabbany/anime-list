@@ -183,10 +183,7 @@ const AnimePage = async ({ params }: AnimePageProps) => {
                 title="Studios"
                 value={anime.studios?.map((s) => s.name).join(", ") || "N/A"}
               />
-              <InfoCard
-                title="Producers"
-                value={anime.producers?.map((p) => p.name).join(", ") || "N/A"}
-              />
+              {/* TODO: Add InfoCard for Producers if anime.producers is available in Anime type and API response */}
             </div>
             <a
               className="text-accent-foreground hover:text-primary mt-6 inline-block text-sm hover:underline" // Increased top margin
