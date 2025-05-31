@@ -72,11 +72,11 @@ const AnimePage = async ({ params }: AnimePageProps) => {
   const handleUpdateStatus = async (status: AnimeListStatus) => {
     "use server";
     if (!animeListEntry || !user?.id) return;
-    await updateAnimeListEntryStatus({
-      entry: animeListEntry,
-      userId: user.id,
-      status,
-    });
+    // await updateAnimeListEntryStatus({
+    //   entry: animeListEntry,
+    //   userId: user.id,
+    //   status,
+    // });
   };
 
   async function addToListAction(formData: FormData) {

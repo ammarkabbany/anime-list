@@ -16,8 +16,8 @@ export default async function SeasonalAnimeSection() {
     <section className="py-8 container mx-auto px-4"> {/* Added container and padding */}
       <h2 className="mb-6 text-3xl font-bold text-primary">Currently Airing This Season</h2>
       <div className="flex space-x-4 overflow-x-auto pb-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']"> {/* Horizontal scroll with hidden scrollbar */}
-        {seasonalAnime.map((anime: Anime) => (
-          <div key={anime.mal_id} className="w-52 flex-shrink-0 md:w-60"> {/* Adjusted width for consistency with AnimeCard aspect ratio */}
+        {/* {seasonalAnime.map((anime: Anime) => (
+          <div key={anime.mal_id} className="w-52 flex-shrink-0 md:w-60">
             <Link href={`/anime/${anime.mal_id}`} passHref>
               <AnimeCard
                 anime={anime}
@@ -25,7 +25,7 @@ export default async function SeasonalAnimeSection() {
               />
             </Link>
           </div>
-        ))}
+        ))} */}
       </div>
     </section>
   );

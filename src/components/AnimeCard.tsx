@@ -13,7 +13,7 @@ interface AnimeCardProps {
 const AnimeCard: React.FC<AnimeCardProps> = ({ anime, onClick }) => {
   return (
     <Card
-      className="group relative flex cursor-pointer flex-col overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-primary/30"
+      className="group relative flex cursor-pointer pt-0 pb-1.5 flex-col overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-primary/30"
       onClick={() => onClick?.(anime)} // Conditional call
     >
       {/* Image container */}

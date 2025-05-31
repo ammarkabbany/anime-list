@@ -8,15 +8,7 @@ import AnimeCard from "@/components/AnimeCard";
 // SeasonalAnimeSection and UpcomingAnimeSection are removed as they'll be passed as props
 import { useRouter } from "next/navigation";
 
-interface HomePageClientContentProps {
-  seasonalContent: React.ReactNode;
-  upcomingContent: React.ReactNode;
-}
-
-export default function HomePageClientContent({
-  seasonalContent,
-  upcomingContent
-}: HomePageClientContentProps) {
+export default function HomePageClientContent() {
   const router = useRouter();
 
   const handleAnimeCardClick = useCallback((anime: Anime) => {
@@ -65,9 +57,6 @@ export default function HomePageClientContent({
           </div>
         )}
       </section>
-
-      {seasonalContent}
-      {upcomingContent}
     </main>
   );
 }
