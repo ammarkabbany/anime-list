@@ -1,15 +1,20 @@
 "use client"
 
+import { useCallback } from "react"; // Import useCallback
 import { env } from "@/env"
 import { useQuery } from "@tanstack/react-query";
 import { type Anime, type AnimeResponse } from "@/types/jikan";
 import AnimeCard from "@/components/AnimeCard";
 import SeasonalAnimeSection from "@/components/SeasonalAnimeSection";
-import UpcomingAnimeSection from "@/components/UpcomingAnimeSection"; // Import the new upcoming section
+import UpcomingAnimeSection from "@/components/UpcomingAnimeSection";
 import { useRouter } from "next/navigation";
 
 export default function HomePage() {
   const router = useRouter();
+
+  const handleAnimeCardClick = useCallback((anime: Anime) => { // Define memoized handler
+    router.push(`/anime/${anime.mal_id}`);
+  }, [router]);
   
   const { data, isLoading } = useQuery<Anime[]>({
     queryKey: ["animes"],
@@ -30,6 +35,9 @@ export default function HomePage() {
           return []
         }
       },
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
   })
   
   return (
@@ -45,9 +53,7 @@ export default function HomePage() {
               <AnimeCard
                 key={anime.mal_id}
                 anime={anime}
-                onClick={(anime) => { // This onClick makes HomePage a client component
-                  router.push(`/anime/${anime.mal_id}`)
-                }}
+                onClick={handleAnimeCardClick} // Use memoized handler
               />
             ))}
           </div>

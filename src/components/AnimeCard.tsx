@@ -48,7 +48,7 @@ const AnimeCard: React.FC<AnimeCardProps> = ({ anime, onClick }) => {
       </div>
 
       {/* Content section - title, displayed below image */}
-      <div className="px-3 py-2"> {/* Adjusted padding */}
+      <div className="px-3 py-0"> {/* Changed py-2 to py-0 */}
         <h3
             className="truncate text-base font-semibold text-foreground transition-colors group-hover:text-primary"
             title={anime.title} // Add title attribute for full title on hover if truncated
