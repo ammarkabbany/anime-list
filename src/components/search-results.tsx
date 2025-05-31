@@ -1,6 +1,8 @@
 import { useState, useEffect, type ChangeEventHandler } from "react";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Search } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import Link from "next/link";
@@ -60,26 +62,35 @@ export default function SearchResults() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-md space-y-4">
-      <div className="flex items-center space-x-4">
+    <div className="mx-auto w-full max-w-md space-y-2"> {/* Reduced space-y for tighter layout if card has margin */}
+      <div className="relative flex items-center">
         <Input
           type="search"
-          placeholder="Search movies and anime..."
+          placeholder="Search anime..."
           value={query}
           onChange={handleInputChange}
-          className="w-full"
+          className="w-full rounded-full shadow-md pr-10 focus:ring-2 focus:ring-primary/50"
         />
+        <Button
+          type="button" // Or "submit" if we want form submission, but current logic is onChange
+          size="icon"
+          variant="ghost"
+          className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full"
+          aria-label="Search" // For accessibility
+        >
+          <Search className="h-5 w-5 text-muted-foreground" />
+        </Button>
       </div>
       {(isLoading || results.length > 0) && (
-          <Card>
-            <CardContent className="p-4">
+          <Card className="rounded-xl shadow-lg transition-all duration-300 ease-in-out mt-2">
+            <CardContent className="p-4 space-y-3">
               {isLoading ? (
-                <p className="text-center">Loading...</p>
+                <p className="text-center text-primary font-semibold animate-pulse">Loading...</p>
               ) : (
                 results.map((result) => (
                   <Link
                     key={result.mal_id}
-                    className="mb-4 flex items-center space-x-4 last:mb-0"
+                    className="group flex items-center space-x-4 p-2 rounded-lg hover:bg-accent transition-colors duration-200" // Added group class
                     onClick={() => setQuery("")}
                     href={`/anime/${result.mal_id}`}
                   >
@@ -91,12 +102,13 @@ export default function SearchResults() {
                       className="rounded-md object-cover"
                     />
                     <div>
-                      <h3 className="font-semibold">{result.title}</h3>
-                      <p className="text-muted-foreground text-sm">
-                        {result.year} - {result.episodes} episodes
+                      <h3 className="font-semibold text-card-foreground group-hover:text-primary">{result.title}</h3>
+                      <p className="text-sm text-muted-foreground group-hover:text-accent-foreground">
+                        {result.year}{result.episodes ? ` - ${result.episodes} episodes` : ""}
                       </p>
-                      <div className="flex gap-2">
-                        <Badge key={result.type}>{result.type}</Badge>
+                      <div className="mt-1 flex gap-2">
+                        {result.type && <Badge key={result.type} variant="secondary" className="bg-secondary text-secondary-foreground group-hover:bg-primary/20 group-hover:text-primary">{result.type}</Badge>}
+                        {result.status && <Badge key={result.status} variant="outline" className="group-hover:border-primary/50 group-hover:text-primary/80">{result.status}</Badge>}
                       </div>
                     </div>
                   </Link>

@@ -49,16 +49,17 @@ const AnimeListPage = async ({params}: AnimeListPageProps) => {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6">My Anime List</h1>
+    <div className="container mx-auto px-4 py-8 mt-6">
+      <h1 className="text-4xl font-extrabold mb-8 text-primary">My Anime List</h1>
 
       {animeListEntries?.length ? (
         <Tabs defaultValue={allEntries}>
-          <TabsList className="mb-6">
+          <TabsList className="rounded-full shadow-md bg-primary-foreground p-1">
             {statusTabs.map(tab => (
               <TabsTrigger 
                 key={tab.value} 
                 value={tab.value}
+                className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm hover:bg-accent hover:text-accent-foreground transition-all duration-300 px-4 py-1.5 text-sm"
                 disabled={tab.value === allEntries 
                   ? !animeListEntries.length 
                   : !entriesByStatus?.[tab.value as AnimeListStatus]?.length}
@@ -86,7 +87,7 @@ const AnimeListPage = async ({params}: AnimeListPageProps) => {
                 ))}
               </div>
               {!entriesByStatus?.[tab.value as AnimeListStatus]?.length && (
-                <p className="text-center text-muted-foreground py-10">
+                <p className="text-center text-lg text-muted-foreground py-12">
                   No anime in this category yet
                 </p>
               )}
@@ -95,7 +96,7 @@ const AnimeListPage = async ({params}: AnimeListPageProps) => {
         </Tabs>
       ) : (
         <div className="text-center py-16">
-          <p className="text-xl mb-4">Your anime list is empty</p>
+          <p className="text-2xl font-semibold mb-3 text-primary/90">Your anime list is empty</p>
           <p className="text-muted-foreground">
             Browse anime and add them to your list to keep track of your watching progress
           </p>
