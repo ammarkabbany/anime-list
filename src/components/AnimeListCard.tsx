@@ -67,6 +67,13 @@ const AnimeListCard: React.FC<AnimeListCardProps> = ({ entry, userId }) => {
 
   const handleUpdateEpisodes = (e?: React.FormEvent) => {
     e?.preventDefault();
+
+    if (episodesInputValue === entry.episodes_watched) {
+      // console.log("Episode count unchanged, not updating.");
+      setEpisodesInputOpen(false); // Still close the input if blurred
+      return;
+    }
+
     const value = episodesInputValue;
     if (isNaN(value)) return;
     if (value >= 0 && value <= (entry.total_episodes ?? Infinity)) {

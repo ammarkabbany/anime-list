@@ -43,8 +43,8 @@ const AnimeListPage = async ({params}: AnimeListPageProps) => {
     { value: allEntries, label: "All" },
     { value: AnimeListStatus.Watching, label: "Watching" },
     { value: AnimeListStatus.Completed, label: "Completed" },
-    // { value: AnimeListStatus.OnHold, label: "On Hold" },
-    // { value: AnimeListStatus.Dropped, label: "Dropped" },
+    { value: AnimeListStatus.OnHold, label: "On Hold" },
+    { value: AnimeListStatus.Dropped, label: "Dropped" },
     { value: AnimeListStatus.PlanToWatch, label: "Plan to Watch" },
   ];
 
@@ -59,7 +59,7 @@ const AnimeListPage = async ({params}: AnimeListPageProps) => {
               <TabsTrigger 
                 key={tab.value} 
                 value={tab.value}
-                className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-sm hover:bg-accent hover:text-accent-foreground transition-all duration-300 px-4 py-1.5 text-sm"
+                // className is removed to use the new default styles from ui/tabs.tsx
                 disabled={tab.value === allEntries 
                   ? !animeListEntries.length 
                   : !entriesByStatus?.[tab.value as AnimeListStatus]?.length}
@@ -71,7 +71,7 @@ const AnimeListPage = async ({params}: AnimeListPageProps) => {
 
           {/* Special All tab */}
           <TabsContent key={allEntries} value={allEntries}>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
               {sortedAllEntries.map(entry => (
                 <AnimeListCard key={entry.$id} entry={entry} userId={userId} />
               ))}
@@ -81,7 +81,7 @@ const AnimeListPage = async ({params}: AnimeListPageProps) => {
           {/* Status-specific tabs */}
           {statusTabs.filter(tab => tab.value !== allEntries).map(tab => (
             <TabsContent key={tab.value} value={tab.value}>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
                 {entriesByStatus?.[tab.value as AnimeListStatus]?.map(entry => (
                   <AnimeListCard key={entry.$id} entry={entry} userId={userId} />
                 ))}

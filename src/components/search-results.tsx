@@ -75,7 +75,7 @@ export default function SearchResults() {
           type="button" // Or "submit" if we want form submission, but current logic is onChange
           size="icon"
           variant="ghost"
-          className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full"
+          className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full hover:bg-transparent hover:text-muted-foreground"
           aria-label="Search" // For accessibility
         >
           <Search className="h-5 w-5 text-muted-foreground" />
