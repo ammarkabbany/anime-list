@@ -20,9 +20,7 @@ export default async function UpcomingAnimeSection() {
             <Link href={`/anime/${anime.mal_id}`} passHref>
               <AnimeCard
                 anime={anime}
-                onClick={() => {
-                  // Navigation handled by Link wrapper
-                }}
+                // onClick prop removed as Link handles navigation
               />
             </Link>
           </div>

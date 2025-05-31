@@ -21,10 +21,7 @@ export default async function SeasonalAnimeSection() {
             <Link href={`/anime/${anime.mal_id}`} passHref>
               <AnimeCard
                 anime={anime}
-                onClick={() => {
-                  // The onClick is now handled by the Link wrapper for navigation.
-                  // If AnimeCard had other interactive elements, their onClicks would still function.
-                }}
+                // onClick prop removed as Link handles navigation
               />
             </Link>
           </div>

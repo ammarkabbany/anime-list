@@ -7,14 +7,14 @@ import Image from 'next/image';
 
 interface AnimeCardProps {
   anime: Anime;
-  onClick: (anime: Anime) => void;
+  onClick?: (anime: Anime) => void; // Made onClick optional
 }
 
 const AnimeCard: React.FC<AnimeCardProps> = ({ anime, onClick }) => {
   return (
     <Card
       className="group relative flex cursor-pointer flex-col overflow-hidden rounded-lg bg-card shadow-lg transition-all duration-300 hover:shadow-primary/30"
-      onClick={() => onClick(anime)}
+      onClick={() => onClick?.(anime)} // Conditional call
     >
       {/* Image container */}
       <div className="relative aspect-[2/3] w-full overflow-hidden">
