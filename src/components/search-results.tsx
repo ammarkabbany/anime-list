@@ -82,7 +82,7 @@ export default function SearchResults() {
         </Button>
       </div>
       {(isLoading || results.length > 0) && (
-          <Card className="rounded-xl shadow-lg transition-all duration-300 ease-in-out mt-2">
+          <Card className="rounded-xl shadow-xl border border-primary/20 transition-all duration-300 ease-in-out mt-2">
             <CardContent className="p-4 space-y-3">
               {isLoading ? (
                 <p className="text-center text-primary font-semibold animate-pulse">Loading...</p>
@@ -90,7 +90,7 @@ export default function SearchResults() {
                 results.map((result) => (
                   <Link
                     key={result.mal_id}
-                    className="group flex items-center space-x-4 p-2 rounded-lg hover:bg-accent transition-colors duration-200" // Added group class
+                    className="group flex items-center space-x-4 p-2 rounded-lg hover:bg-gradient-to-r hover:from-pink-500/10 hover:to-purple-500/10 transition-all duration-200" // Updated hover and transition
                     onClick={() => setQuery("")}
                     href={`/anime/${result.mal_id}`}
                   >

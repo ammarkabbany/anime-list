@@ -39,7 +39,7 @@ const AnimeCard: React.FC<AnimeCardProps> = ({ anime, onClick }) => {
         </div>
       </div>
       <div className="p-3 flex-grow">
-        <h3 className="text-sm font-semibold line-clamp-1">{anime.title}</h3>
+        <h3 className="text-base font-semibold line-clamp-1 text-foreground hover:text-primary transition-colors">{anime.title}</h3>
         <div className="flex items-center justify-between mt-2 text-xs text-muted-foreground">
           <span>{anime.status}</span>
           {anime.episodes && <span>{anime.episodes} episodes</span>}

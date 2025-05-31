@@ -50,11 +50,11 @@
   --radius: 0.75rem; /* Increased for more rounded look */
 
   /* Vibrant Anime Palette - Light Theme */
-  --background: oklch(0.98 0.01 240); /* Very light, slightly cool pastel */
-  --foreground: oklch(0.25 0.03 260); /* Dark, slightly cool for text */
+  --background: oklch(0.99 0.005 260); /* Very light, near-white lavender */
+  --foreground: oklch(0.15 0.02 270); /* Dark indigo/purple */
 
   --card: oklch(1 0 0); /* White cards for clean look */
-  --card-foreground: oklch(0.25 0.03 260);
+  --card-foreground: oklch(0.25 0.03 260); /* Keeping card foreground darker for white cards */
 
   --popover: oklch(0.99 0.01 240);
   --popover-foreground: oklch(0.25 0.03 260);
@@ -92,11 +92,11 @@
 
 .dark {
   /* Vibrant Anime Palette - Dark Theme */
-  --background: oklch(0.15 0.03 260); /* Dark, slightly cool pastel */
-  --foreground: oklch(0.95 0.01 240); /* Very light, slightly cool for text */
+  --background: oklch(0.12 0.01 270);  /* Very dark, desaturated indigo/purple */
+  --foreground: oklch(0.95 0.01 270);  /* Light lavender/off-white */
 
   --card: oklch(0.20 0.03 255); /* Darker cards */
-  --card-foreground: oklch(0.95 0.01 240);
+  --card-foreground: oklch(0.95 0.01 240); /* Keeping card foreground light for dark cards */
 
   --popover: oklch(0.18 0.03 255);
   --popover-foreground: oklch(0.95 0.01 240);

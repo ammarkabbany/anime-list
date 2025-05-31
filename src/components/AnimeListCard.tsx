@@ -70,26 +70,30 @@ const AnimeListCard: React.FC<AnimeListCardProps> = ({ entry, userId }) => {
     const value = episodesInputValue;
     if (isNaN(value)) return;
     if (value >= 0 && value <= (entry.total_episodes ?? Infinity)) {
+      startTransition(() => {
+        mutate(
+          { entry, value: episodesInputValue },
+          {
+            onSuccess: () => {
+              router.refresh();
+            },
+          },
+        );
+      });
+      setEpisodesInputOpen(false);
+    }
+  };
+  const handleIncreaseEpisodes = () => {
+    startTransition(() => {
       mutate(
-        { entry, value: episodesInputValue },
+        { entry, value: entry.episodes_watched + 1 },
         {
           onSuccess: () => {
             router.refresh();
           },
         },
       );
-      setEpisodesInputOpen(false);
-    }
-  };
-  const handleIncreaseEpisodes = () => {
-    mutate(
-      { entry, value: entry.episodes_watched + 1 },
-      {
-        onSuccess: () => {
-          router.refresh();
-        },
-      },
-    );
+    });
   };
 
   return (
@@ -134,6 +138,10 @@ const AnimeListCard: React.FC<AnimeListCardProps> = ({ entry, userId }) => {
                         ? null
                         : Number(e.target.value);
                     // console.log("New score:", newScore);
+                    if (!clerkUserId) {
+                      console.warn('User ID is null, cannot update score.');
+                      return;
+                    }
                     startTransition(() => {
                       updateAnimeListEntryScore({
                         entryId: entry.$id,
