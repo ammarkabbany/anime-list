@@ -3,22 +3,16 @@ import type { Anime } from "@/types/jikan";
 
 export async function getAnimeById(id: string) {
   try {
-    const response = await fetch(`${env.NEXT_PUBLIC_NEXT_URL}/api/anime/${id}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    )
-    if (!response.ok) {
-      throw new Error(`Error: ${response.status} ${response.statusText}`);
+    const response = await fetch(
+      `${env.NEXT_PUBLIC_JIKAN_API_URL}/anime/${id}/full`,
+    );
+    if (response.ok) {
+      const data = await response.json();
+      return data.data as Anime;
     }
-    const data = await response.json() as Anime
-    return data
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    return null
+    return null;
+  } catch (e) {
+    return null;
   }
 }
 
