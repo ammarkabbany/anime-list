@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
   }
   const { databases } = await createAdminClient();
   try {
-    const response = await databases.createDocument<AnimeListEntry>(
+    const response = await databases.createDocument(
       env.NEXT_PUBLIC_DATABASE_ID,
       env.NEXT_PUBLIC_ANIMELIST_COLLECTION_ID,
       ID.unique(),

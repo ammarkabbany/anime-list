@@ -1,29 +1,25 @@
-import { updateAnimeListEntryEpisodes } from "@/actions/animelist";
+import { decrementAnimeListEntryEpisodes, incrementAnimeListEntryEpisodes } from "@/actions/animelist";
 import type { AnimeListEntry } from "@/types/animelist";
 import { useAuth } from "@clerk/nextjs";
 import { useMutation } from "@tanstack/react-query";
 
-export const useUpdateAnimeEpisodes = () => {
+export const useDecrementAnimeEpisodes = () => {
   const { userId: clerkUserId } = useAuth();
 
   return useMutation({
     mutationKey: ["anime"],
     mutationFn: async ({
       entry,
-      value,
     }: {
       entry: AnimeListEntry;
-      value: number;
     }) => {
       try {
         if (!clerkUserId) {
-          return null;
+          throw Error('User not found!')
         }
-        return await updateAnimeListEntryEpisodes({
+        return await decrementAnimeListEntryEpisodes({
           entryId: entry.$id,
           userId: clerkUserId,
-          episodes: value,
-          totalEpisodes: entry.total_episodes,
         });
       } catch (error) {
         console.error("Error fetching data:", error);

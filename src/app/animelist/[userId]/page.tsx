@@ -8,19 +8,19 @@ interface AnimeListPageProps {
   params: Promise<{ userId: string }>;
 }
 
-const AnimeListPage = async ({params}: AnimeListPageProps) => {
-  const {userId} = await params;
-  const animeListEntries = await getAnimeListEntries({userId});
+const AnimeListPage = async ({ params }: AnimeListPageProps) => {
+  const { userId } = await params;
+  const animeListEntries = await getAnimeListEntries({ userId });
 
   // Group entries by status
-  const entriesByStatus = animeListEntries?.reduce((acc, entry) => {
+  const entriesByStatus = animeListEntries?.documents.reduce((acc, entry) => {
     const status = entry.status;
     if (!acc[status]) {
       acc[status] = [];
     }
     acc[status].push(entry);
     return acc;
-  }, {} as Record<AnimeListStatus, typeof animeListEntries>);
+  }, {} as Record<AnimeListStatus, typeof animeListEntries.documents>);
 
   // Add special "all" category
   const allEntries = "all";
@@ -35,7 +35,7 @@ const AnimeListPage = async ({params}: AnimeListPageProps) => {
   };
 
   // Sort function for all entries
-  const sortedAllEntries = [...(animeListEntries ?? [])].sort((a, b) => 
+  const sortedAllEntries = [...(animeListEntries?.documents ?? [])].sort((a, b) =>
     statusPriority[a.status] - statusPriority[b.status]
   );
 
@@ -49,22 +49,25 @@ const AnimeListPage = async ({params}: AnimeListPageProps) => {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8 mt-6">
-      <h1 className="text-4xl font-extrabold mb-8 text-primary">My Anime List</h1>
+    <div className="container mx-auto px-4 py-8">
+      <div className='mb-8'>
+        <h1 className="text-4xl font-extrabold text-primary">My Anime List</h1>
+        <p className='text-xl'>You have {animeListEntries?.total || 0} animes</p>
+      </div>
 
-      {animeListEntries?.length ? (
+      {animeListEntries?.total ? (
         <Tabs defaultValue={allEntries}>
-          <TabsList className="rounded-full shadow-md bg-primary-foreground p-1">
+          <TabsList className="rounded-full shadow-md bg-primary-foreground p-2 mb-10 md:mb-2 flex flex-wrap space-y-1 space-x-1">
             {statusTabs.map(tab => (
-              <TabsTrigger 
-                key={tab.value} 
+              <TabsTrigger
+                key={tab.value}
                 value={tab.value}
                 // className is removed to use the new default styles from ui/tabs.tsx
-                disabled={tab.value === allEntries 
-                  ? !animeListEntries.length 
+                disabled={tab.value === allEntries
+                  ? !animeListEntries.total
                   : !entriesByStatus?.[tab.value as AnimeListStatus]?.length}
               >
-                {tab.label}
+                {tab.label} {entriesByStatus?.[tab.value as AnimeListStatus]?.length}
               </TabsTrigger>
             ))}
           </TabsList>
@@ -81,7 +84,7 @@ const AnimeListPage = async ({params}: AnimeListPageProps) => {
           {/* Status-specific tabs */}
           {statusTabs.filter(tab => tab.value !== allEntries).map(tab => (
             <TabsContent key={tab.value} value={tab.value}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
                 {entriesByStatus?.[tab.value as AnimeListStatus]?.map(entry => (
                   <AnimeListCard key={entry.$id} entry={entry} userId={userId} />
                 ))}

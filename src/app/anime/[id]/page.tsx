@@ -72,11 +72,11 @@ const AnimePage = async ({ params }: AnimePageProps) => {
   const handleUpdateStatus = async (status: AnimeListStatus) => {
     "use server";
     if (!animeListEntry || !user?.id) return;
-    // await updateAnimeListEntryStatus({
-    //   entry: animeListEntry,
-    //   userId: user.id,
-    //   status,
-    // });
+    await updateAnimeListEntryStatus({
+      entry: animeListEntry,
+      userId: user?.id,
+      status,
+    });
   };
 
   async function addToListAction(formData: FormData) {
@@ -109,15 +109,21 @@ const AnimePage = async ({ params }: AnimePageProps) => {
         <Image
           src={anime.images.jpg.large_image_url}
           alt={`Background for ${anime.title}`}
-          fill
-          className="absolute inset-0 w-full h-full object-cover -z-10 filter blur-md" // Added filter blur-md
+          width={512}
+          height={512}
+          className="absolute inset-0 h-full w-full object-contain" // Added filter blur-md
           priority
         />
-        <div className="absolute inset-0 bg-black/75 -z-10" /> {/* Changed to bg-black/75 */}
-        <div className="relative z-0 container mx-auto w-full">
+        <div className="absolute inset-0 bg-black/75 z-0" />
+        <div className="relative z-10 container mx-auto w-full">
           <h1 className="text-3xl md:text-5xl font-bold drop-shadow-lg mb-1">
             {anime.title}
           </h1>
+          {anime.title_english && (
+            <h2 className="text-lg md:text-xl text-gray-300 drop-shadow-md mb-4">
+              {anime.title_english}
+            </h2>
+          )}
           {anime.title_japanese && (
             <h2 className="text-lg md:text-xl text-gray-300 drop-shadow-md mb-4">
               {anime.title_japanese}
