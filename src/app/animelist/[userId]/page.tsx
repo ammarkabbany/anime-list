@@ -57,7 +57,7 @@ const AnimeListPage = async ({ params }: AnimeListPageProps) => {
 
       {animeListEntries?.total ? (
         <Tabs defaultValue={allEntries}>
-          <TabsList className="rounded-full shadow-md bg-primary-foreground p-2 mb-10 md:mb-2 flex flex-wrap space-y-1 space-x-1">
+          <TabsList className="shadow-md grid grid-rows-2 w-full mb-2 lg:w-max h-auto space-y-1 md:space-y-0 md:grid-rows-1 grid-cols-3 sm:grid-cols-4 md:grid-cols-6 items-center px-2 space-x-1">
             {statusTabs.map(tab => (
               <TabsTrigger
                 key={tab.value}
@@ -74,7 +74,7 @@ const AnimeListPage = async ({ params }: AnimeListPageProps) => {
 
           {/* Special All tab */}
           <TabsContent key={allEntries} value={allEntries}>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
               {sortedAllEntries.map(entry => (
                 <AnimeListCard key={entry.$id} entry={entry} userId={userId} />
               ))}

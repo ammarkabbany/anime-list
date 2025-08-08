@@ -167,7 +167,7 @@ const AnimeListCard: React.FC<AnimeListCardProps> = ({ entry, userId }) => {
         )}
         <div className="card-overlay" />
       </CardContent>
-      <div className="flex h-25 flex-grow flex-col justify-between p-2">
+      <div className="flex h-30 flex-grow flex-col justify-between p-2">
         <Link
           href={`/anime/${entry.mal_id}`}
           className="line-clamp-2 text-sm font-semibold transition-colors hover:text-primary"
